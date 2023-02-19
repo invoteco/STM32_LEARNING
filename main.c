@@ -34,10 +34,6 @@ int main(void)
   GPIO_InitStruct.Pull  = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
 
-  //GPIO_InitStruct.Pin = GPIO_PIN_0;//Чтобы мигать зеленым LED
-  //GPIO_InitStruct.Pin = GPIO_PIN_7;//Чтобы мигать голубым LED
-  //GPIO_InitStruct.Pin = GPIO_PIN_14; //Чтобы мигать красным LED
-
   //HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /* -3- Toggle IO in an infinite loop */
@@ -55,7 +51,6 @@ int main(void)
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
     HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_14); //Чтобы мигать красным LED
     /* Insert delay 100 ms */
-    //HAL_Delay(100);
     HAL_Delay(100);
 
   }
