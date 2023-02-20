@@ -28,7 +28,7 @@ int main(void)
   
   /* -1- Enable GPIO Clock (to be able to program the configuration registers) */
   __HAL_RCC_GPIOB_CLK_ENABLE();
-  __HAL_RCC_GPIOC_CLK_ENABLE();//Для работы кнопки
+  __HAL_RCC_GPIOC_CLK_ENABLE();//Для работы кнопки USER (так как она подключениа к регистру С)
 
   /* -2- Configure IO in output push-pull mode to drive external LEDs */
   GPIO_InitStruct.Mode  = GPIO_MODE_OUTPUT_PP;
@@ -38,27 +38,29 @@ int main(void)
   /* -3- Toggle IO in an infinite loop */
   while (1)
   {
-
-	if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == 1){
-
-    GPIO_InitStruct.Pin = GPIO_PIN_0;//Чтобы мигать зеленым LED
-	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-    HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);//Чтобы мигать зеленым LED
-    HAL_Delay(100);
-    GPIO_InitStruct.Pin = GPIO_PIN_7;//Чтобы мигать голубым LED
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-    HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_7); //Чтобы мигать голубым LED
-    HAL_Delay(100);
-    GPIO_InitStruct.Pin = GPIO_PIN_14; //Чтобы мигать красным LED
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-    HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_14); //Чтобы мигать красным LED
-    /* Insert delay 100 ms */
-    HAL_Delay(100);
+	if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == 1)//Если на Pin13 уровень 1 (кнопка нажата)
+	{
+		/*Мигаем зеленым LED*/	
+       	 	GPIO_InitStruct.Pin = GPIO_PIN_0;
+		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+        	HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
+        	HAL_Delay(100);
+		/*Мигаем голубым LED*/
+        	GPIO_InitStruct.Pin = GPIO_PIN_7;
+        	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+        	HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
+        	HAL_Delay(100);
+		/*Мигаем красным LED*/
+    		GPIO_InitStruct.Pin = GPIO_PIN_14;
+   		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+    		HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_14);
+    		HAL_Delay(100);
 	  }
-	  else{
-		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_RESET);
-		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET);
-		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_RESET);
+	  else
+	  {
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_RESET);
 	  }
   }
 }
