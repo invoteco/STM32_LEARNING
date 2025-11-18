@@ -1,0 +1,111 @@
+#include <stdio.h>
+#include <math.h>
+#include <stdint.h>
+
+int main() {
+double sourcenum = 31.4159;
+
+		double k = 0.0;
+		uint32_t IntVal = 0;
+		double num;
+	    double roundednum;
+		uint16_t intpart;
+		uint8_t DispMass[4];
+		uint8_t Mass[4];
+
+		if (sourcenum < 0){
+		    num  = -1 * sourcenum;
+		}
+		else{
+			num = sourcenum;}
+
+		uint8_t dpp = 1; //Ïîçèöèÿ òî÷êè
+
+		if ((num <= 9999) && (num >= 999)){
+		   roundednum = round(num * 1) / 1;
+		}
+		if((num < 999) && (num >= 99)){
+		    roundednum = round(num * 10) / 10;
+		}
+		if((num < 99) && (num >= 9)){
+		    roundednum = round(num * 100) / 100;
+		}
+		if((num < 9) && (num >= 1)){
+		    roundednum = round(num * 1000) / 1000;
+		}
+		if((num < 1) && (num >= 0.001)){
+		    roundednum = round(num * 1000) / 1000;
+		}
+
+		intpart = (uint16_t)roundednum;
+
+		while (intpart /= 10){
+		    dpp++;
+		}
+		if (sourcenum < 0){
+		    dpp  = dpp + 1;
+		}
+
+	    dpp = dpp - 1;
+
+		if (dpp == 0){
+	    	    k = 1000.0;
+	        }
+	        else if (dpp == 1){
+	    	    k = 100.0;
+	        }
+	        else if (dpp == 2){
+	    	    k = 10.0;
+	        }
+	        else if (dpp == 3){
+	          k = 1.0;
+	        }
+	        else {
+	    	  k = 1.0;
+	        }
+	    double bigdou = roundednum * k;
+
+		IntVal = (int)bigdou;
+
+		Mass[0] = (IntVal / 1000);
+	    Mass[1] = (IntVal % 1000) / 100;
+	    Mass[2] = (IntVal % 100) / 10;
+	    Mass[3] = (IntVal % 10);
+	
+        
+        printf("dpp: %d\n", dpp);
+        
+        
+        for	(int i = 0; i < 4; i++) { 
+            printf("numbers[%d] = %d\n", i, Mass[i]); 
+        }
+
+       //Создание и заполнение массива с данными ои точкоййв позиции dpp
+       char buffer[sizeof(Mass) + 1] ={};
+       
+       int dppnew=dpp + 1;//Для вычисления правильного положения точки
+ 
+       for	(int k = 0; k< sizeof(buffer); k++){
+           
+           if (k == dppnew){
+               buffer[k] = '.';
+           }else if (k > dppnew){
+               buffer[k] = Mass[k - 1]; 
+           }
+           else{
+               buffer[k] = Mass[k]; 
+           }
+       }
+       
+        //Вывод содержимого буфера
+        for	(int j = 0; j< sizeof(buffer); j++) { 
+            if (buffer[j] == '.'){
+                printf("buffer[%d] = %c\n", j, '.'); 
+            }else{
+                printf("buffer[%d] = %c\n", j, buffer[j] + '0'); 
+            }
+        }
+    return 0;
+}
+
+
