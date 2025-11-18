@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 int main() {
-double sourcenum = 31.4159;
+double sourcenum = -3.14159;
 
 		double k = 0.0;
 		uint32_t IntVal = 0;
@@ -140,15 +140,16 @@ double sourcenum = 31.4159;
 }
 /*Вывод
 dpp: 1
-numbers[0] = 3
-numbers[1] = 1
-numbers[2] = 4
-numbers[3] = 2
-buffer[0] = 3
-buffer[1] = 1
+numbers[0] = 0
+numbers[1] = 3
+numbers[2] = 1
+numbers[3] = 4
+
+buffer[0] = -
+buffer[1] = 3
 buffer[2] = .
-buffer[3] = 4
-buffer[4] = 2
+buffer[3] = 1
+buffer[4] = 4
 */
-//Как видим точка стоит в нужной позиции. Осталось разобраться с отрицательными числами
+//Как видим точка стоит в нужной позиции.
 
