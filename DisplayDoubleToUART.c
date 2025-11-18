@@ -73,38 +73,69 @@ double sourcenum = 31.4159;
 	    Mass[3] = (IntVal % 10);
 	
         
-        printf("dpp: %d\n", dpp);
-        
-        
-        for	(int i = 0; i < 4; i++) { 
-            printf("numbers[%d] = %d\n", i, Mass[i]); 
-        }
+        printf("dpp: %d\n", dpp);//Вывод положения (индекса) точки
+    
+	//Вывод исходного массива
+    for (int i = 0; i < 4; i++) {
+        printf("numbers[%d] = %d\n", i, Mass[i]);
+    }
 
-       //Создание и заполнение массива с данными ои точкой в позиции dpp
-       char buffer[sizeof(Mass) + 1] ={};
-       
-       int dppnew=dpp + 1;//Для вычисления правильного положения точки
- 
-       for	(int k = 0; k< sizeof(buffer); k++){
-           
-           if (k == dppnew){
-               buffer[k] = '.';
-           }else if (k > dppnew){
-               buffer[k] = Mass[k - 1]; 
-           }
-           else{
-               buffer[k] = Mass[k]; 
-           }
-       }
-       
-        //Вывод содержимого буфера
-        for	(int j = 0; j< sizeof(buffer); j++) { 
-            if (buffer[j] == '.'){
-                printf("buffer[%d] = %c\n", j, '.'); 
-            }else{
-                printf("buffer[%d] = %c\n", j, buffer[j] + '0'); 
+    if (sourcenum < 0) {
+        //Создание и заполнение массива с данными ои точкой в позиции dppа
+        char buffer[sizeof(Mass) + 1] = {}; //т.к массив увеличивается на 1 из-за точки и минуса
+        int dppnew = dpp + 1; //Для вычисления правильного положения точки (сдвигается вправо)
+        for (int k = 0; k < sizeof(buffer); k++) {
+            if (k == 0) {
+                buffer[k] = '-';
+            }
+            else if (k == dppnew) {
+                buffer[k] = '.';
+            } else if (k > dppnew) {
+                buffer[k] = Mass[k - 1];
+            }
+            else {
+                buffer[k] = Mass[k];
             }
         }
+
+        //Вывод содержимого буфера
+        for (int j = 0; j < sizeof(buffer); j++) {
+            if (buffer[j] == '-') {
+                printf("buffer[%d] = %c\n", j, '-');
+            }
+            else if (buffer[j] == '.') {
+                printf("buffer[%d] = %c\n", j, '.');
+            } else {
+                printf("buffer[%d] = %c\n", j, buffer[j] + '0');
+            }
+        }
+    }
+    else
+    {
+        //Создание и заполнение массива с данными и точкой в позиции dpp
+        char buffer[sizeof(Mass) + 1] = {}; //т.к. массив увеличивается на 1 из-за точки
+        int dppnew = dpp + 1; //Для вычисления правильного положения точки
+        for (int k = 0; k < sizeof(buffer); k++) {
+
+            if (k == dppnew) {
+                buffer[k] = '.';
+            } else if (k > dppnew) {
+                buffer[k] = Mass[k - 1];
+            }
+            else {
+                buffer[k] = Mass[k];
+            }
+        }
+
+        //Вывод содержимого буфера
+        for (int j = 0; j < sizeof(buffer); j++) {
+            if (buffer[j] == '.') {
+                printf("buffer[%d] = %c\n", j, '.');
+            } else {
+                printf("buffer[%d] = %c\n", j, buffer[j] + '0');
+            }
+        }
+    }
     return 0;
 }
 /*Вывод
