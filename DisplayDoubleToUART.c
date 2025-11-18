@@ -1,155 +1,118 @@
-#include <stdio.h>
-#include <math.h>
-#include <stdint.h>
+int main(void) {
+	/* USER CODE BEGIN 1 */
+	double sourcenum = -0.123456789;
+	/* USER CODE END 1 */
 
-int main() {
-double sourcenum = -3.14159;
+	/* MCU Configuration--------------------------------------------------------*/
 
-		double k = 0.0;
-		uint32_t IntVal = 0;
-		double num;
-	    double roundednum;
-		uint16_t intpart;
-		uint8_t DispMass[4];
-		uint8_t Mass[4];
+	/* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+	HAL_Init();
 
-		if (sourcenum < 0){
-		    num  = -1 * sourcenum;
-		}
-		else{
-			num = sourcenum;}
+	/* USER CODE BEGIN Init */
 
-		uint8_t dpp = 1; //Ïîçèöèÿ òî÷êè
+	/* USER CODE END Init */
 
-		if ((num <= 9999) && (num >= 999)){
-		   roundednum = round(num * 1) / 1;
-		}
-		if((num < 999) && (num >= 99)){
-		    roundednum = round(num * 10) / 10;
-		}
-		if((num < 99) && (num >= 9)){
-		    roundednum = round(num * 100) / 100;
-		}
-		if((num < 9) && (num >= 1)){
-		    roundednum = round(num * 1000) / 1000;
-		}
-		if((num < 1) && (num >= 0.001)){
-		    roundednum = round(num * 1000) / 1000;
-		}
+	/* Configure the system clock */
+	SystemClock_Config();
 
-		intpart = (uint16_t)roundednum;
+	/* USER CODE BEGIN SysInit */
 
-		while (intpart /= 10){
-		    dpp++;
-		}
-		if (sourcenum < 0){
-		    dpp  = dpp + 1;
-		}
+	/* USER CODE END SysInit */
 
-	    dpp = dpp - 1;
+	/* Initialize all configured peripherals */
+	MX_GPIO_Init();
+	MX_USART1_UART_Init();
+	/* USER CODE BEGIN 2 */
 
-		if (dpp == 0){
-	    	    k = 1000.0;
-	        }
-	        else if (dpp == 1){
-	    	    k = 100.0;
-	        }
-	        else if (dpp == 2){
-	    	    k = 10.0;
-	        }
-	        else if (dpp == 3){
-	          k = 1.0;
-	        }
-	        else {
-	    	  k = 1.0;
-	        }
-	    double bigdou = roundednum * k;
+	/* USER CODE END 2 */
 
-		IntVal = (int)bigdou;
+	/* Infinite loop */
+	/* USER CODE BEGIN WHILE */
+	while (1) {
+		
+		    int digitstoround = 4; //До скольки знаков производить округление
+		    if (sourcenum < 0) {
+		        digitstoround = digitstoround - 1;
+		    }
 
-		Mass[0] = (IntVal / 1000);
-	    Mass[1] = (IntVal % 1000) / 100;
-	    Mass[2] = (IntVal % 100) / 10;
-	    Mass[3] = (IntVal % 10);
-	
-        
-        printf("dpp: %d\n", dpp);//Вывод положения (индекса) точки
-    
-	//Вывод исходного массива
-    for (int i = 0; i < 4; i++) {
-        printf("numbers[%d] = %d\n", i, Mass[i]);
-    }
+		    double k = 0.0;
+		    uint32_t IntVal = 0;
+		    double num;
+		    double roundednum;
+		    uint16_t intpart;
+		    uint8_t myarray[4];
 
-    if (sourcenum < 0) {
-        //Создание и заполнение массива с данными ои точкой в позиции dppа
-        char buffer[sizeof(Mass) + 1] = {}; //т.к массив увеличивается на 1 из-за точки и минуса
-        int dppnew = dpp + 1; //Для вычисления правильного положения точки (сдвигается вправо)
-        for (int k = 0; k < sizeof(buffer); k++) {
-            if (k == 0) {
-                buffer[k] = '-';
-            }
-            else if (k == dppnew) {
-                buffer[k] = '.';
-            } else if (k > dppnew) {
-                buffer[k] = Mass[k - 1];
-            }
-            else {
-                buffer[k] = Mass[k];
-            }
-        }
+		    if (sourcenum < 0) {
+		        num = -1 * sourcenum;
+		    }
+		    else {
+		        num = sourcenum;
+		    }
 
-        //Вывод содержимого буфера
-        for (int j = 0; j < sizeof(buffer); j++) {
-            if (buffer[j] == '-') {
-                printf("buffer[%d] = %c\n", j, '-');
-            }
-            else if (buffer[j] == '.') {
-                printf("buffer[%d] = %c\n", j, '.');
-            } else {
-                printf("buffer[%d] = %c\n", j, buffer[j] + '0');
-            }
-        }
-    }
-    else
-    {
-        //Создание и заполнение массива с данными и точкой в позиции dpp
-        char buffer[sizeof(Mass) + 1] = {}; //т.к. массив увеличивается на 1 из-за точки
-        int dppnew = dpp + 1; //Для вычисления правильного положения точки
-        for (int k = 0; k < sizeof(buffer); k++) {
+		    uint8_t dpp = 1; //Ïîçèöèÿ òî÷êè
 
-            if (k == dppnew) {
-                buffer[k] = '.';
-            } else if (k > dppnew) {
-                buffer[k] = Mass[k - 1];
-            }
-            else {
-                buffer[k] = Mass[k];
-            }
-        }
+		    double fac = pow(10, digitstoround);
+		    roundednum = round(num * fac) / fac;
 
-        //Вывод содержимого буфера
-        for (int j = 0; j < sizeof(buffer); j++) {
-            if (buffer[j] == '.') {
-                printf("buffer[%d] = %c\n", j, '.');
-            } else {
-                printf("buffer[%d] = %c\n", j, buffer[j] + '0');
-            }
-        }
-    }
-    return 0;
+		    intpart = (uint16_t) roundednum;
+
+		    while (intpart /= 10) {
+		        dpp++;
+		    }
+		    if (sourcenum < 0) {
+		        dpp = dpp + 1;
+		    }
+
+		    dpp = dpp - 1;
+
+		    if (dpp == 0) {
+		        k = 1000.0;
+		    }
+		    else if (dpp == 1) {
+		        k = 100.0;
+		    }
+		    else if (dpp == 2) {
+		        k = 10.0;
+		    }
+		    else if (dpp == 3) {
+		        k = 1.0;
+		    }
+		    else {
+		        k = 1.0;
+		    }
+		    double bigdou = roundednum * k;
+
+		    IntVal = (int) bigdou;
+
+		    myarray[0] = (IntVal / 1000);
+		    myarray[1] = (IntVal % 1000) / 100;
+		    myarray[2] = (IntVal % 100) / 10;
+		    myarray[3] = (IntVal % 10);
+
+		    //Создание и заполнение массива с данными ои точкой в позиции dppа
+		    char buffer[sizeof(myarray) + 1] = {'\0'}; //т.к массив увеличивается на 1 из-за точки и минуса
+		    int dppnew = dpp + 1; //Для вычисления правильного положения точки (сдвигается вправо)
+		    for (int k = 0; k < sizeof(buffer); k++) {
+
+		        if ((k == 0) && (sourcenum < 0)) {
+		            buffer[k] = '-';
+		        }
+		        else if (k == dppnew) {
+		            buffer[k] = '.';
+		        } else if (k > dppnew) {
+		            buffer[k] = myarray[k - 1] + '0';
+		        }
+		        else {
+		            buffer[k] = myarray[k] + '0';
+		        }
+		    }
+
+		    HAL_UART_Transmit(&huart1, (uint8_t*)buffer, sizeof(buffer), 100);
+		    HAL_Delay(500);
+
+		/* USER CODE END WHILE */
+
+		/* USER CODE BEGIN 3 */
+	}
+	/* USER CODE END 3 */
 }
-/*Вывод
-dpp: 1
-numbers[0] = 0
-numbers[1] = 3
-numbers[2] = 1
-numbers[3] = 4
-
-buffer[0] = -
-buffer[1] = 3
-buffer[2] = .
-buffer[3] = 1
-buffer[4] = 4
-*/
-//Как видим точка стоит в нужной позиции.
-
