@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-//Работает для    if ((sourcenum > -999.999) && (sourcenum <= -1.000))
-
 //Возведение в степень
 int my_power(int base, unsigned int exp) {
     int i, result = 1;
@@ -16,8 +14,10 @@ int my_power(int base, unsigned int exp) {
 int main(void) {
 
     //double sourcenum = -998.999;
-    double sourcenum = -1.001;
-
+    //double sourcenum = -1.001;
+    //double sourcenum = -0.100;
+    //double sourcenum = -0.015;
+    double sourcenum = -0.005;
 
     while (1) {
         uint8_t digitstoround = 3; //До скольки знаков производить округление
@@ -91,7 +91,7 @@ int main(void) {
         for (int i = 0; i < sizeof(myarray); i++) {
             printf("myarray[%d] = %d \n", i, myarray[i]);
         }
-        
+
         if ((sourcenum > -999.999) && (sourcenum <= -1.000)) {
             //Создание и заполнение массива с данныи ои точкой в позиции dppа
             char buffer[8] = {};
@@ -102,20 +102,84 @@ int main(void) {
                 }
                 if (k == dppnew) {
                     buffer[k] = '.';
-                } 
-                if (k > dppnew) {
-                    buffer[k] = myarray[k-2] + '0';
                 }
-                if ((k < dppnew) && (k > 0)){
+                if (k > dppnew) {
+                    buffer[k] = myarray[k - 2] + '0';
+                }
+                if ((k < dppnew) && (k > 0)) {
                     buffer[k] = myarray[k - 1] + '0';
                 }
             }
-            
+        }
+        else if ((sourcenum > -1.000) && (sourcenum <= -0.100)) {
+            //Создание и заполнение массива с данныи ои точкой в позиции dppа
+            char buffer[8] = {};
+            int dppnew = dpp + 2; //Для вычисления правильного положения точки (сдвигается вправо)
+            for (int k = 0; k < sizeof(buffer); k++) {
+                if (k == 0) {
+                    buffer[k] = '-';
+                }
+                if (k == dppnew) {
+                    buffer[k] = '.';
+                }
+                if (k > dppnew) {
+                    buffer[k] = myarray[k - 3] + '0';
+                }
+                if ((k < dppnew) && (k > 0)) {
+                    buffer[k] = myarray[k - 2] + '0';
+                }
+            }
             //Вывод содержимого буфера
             for (int j = 0; j < sizeof(buffer); j++) {
                 printf("buffer[%d] = %c\n", j, buffer[j]);
             }
         }
+            else if ((sourcenum > -0.100) && (sourcenum <= -0.01)) {
+            //Создание и заполнение массива с данныи ои точкой в позиции dppа
+            char buffer[8] = {};
+            int dppnew = dpp + 2; //Для вычисления правильного положения точки (сдвигается вправо)
+            for (int k = 0; k < sizeof(buffer); k++) {
+                if (k == 0) {
+                    buffer[k] = '-';
+                }
+                if (k == dppnew) {
+                    buffer[k] = '.';
+                }
+                if (k > dppnew) {
+                    buffer[k] = myarray[k - 4] + '0';
+                }
+                if ((k < dppnew) && (k > 0)) {
+                    buffer[k] = myarray[k - 3] + '0';
+                }
+            }
+            //Вывод содержимого буфера
+            for (int j = 0; j < sizeof(buffer); j++) {
+                printf("buffer[%d] = %c\n", j, buffer[j]);
+            }
+        }
+            else if ((sourcenum > -0.010) && (sourcenum <= -0.001)) {
+            //Создание и заполнение массива с данныи ои точкой в позиции dppа
+            char buffer[8] = {};
+            int dppnew = dpp + 2; //Для вычисления правильного положения точки (сдвигается вправо)
+            for (int k = 0; k < sizeof(buffer); k++) {
+                if (k == 0) {
+                    buffer[k] = '-';
+                }
+                if (k == dppnew) {
+                    buffer[k] = '.';
+                }
+                if (k > dppnew) {
+                    buffer[k] = myarray[k - 5] + '0';
+                }
+                if ((k < dppnew) && (k > 0)) {
+                    buffer[k] = myarray[k - 4] + '0';
+                }
+            }
+            //Вывод содержимого буфера
+            for (int j = 0; j < sizeof(buffer); j++) {
+                printf("buffer[%d] = %c\n", j, buffer[j]);
+            }
+        }       
         break;
     }
 }
