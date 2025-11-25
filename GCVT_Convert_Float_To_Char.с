@@ -1,0 +1,27 @@
+//https://www.geeksforgeeks.org/c/gcvt-convert-float-value-string-c/?ysclid=miek5wdsna294868261
+
+#include <stdint.h>
+
+// C program to convert float
+// value in string using gcvt()
+#include <stdio.h>
+#define MAX 100
+
+int main()
+{
+    float x = -123.4567;
+    char buf[MAX];
+
+    gcvt(x, 6, buf);
+
+    //printf("buffer is: %s\n", buf);
+    
+    
+    //Вывод содержимого буфера
+    for (int j = 0; j < sizeof(buf); j++) {
+        printf("buf[%d] = %c\n", j, buf[j]);
+    }
+    //printf("buffer is: %c\n", buf);
+
+    return 0;
+}
